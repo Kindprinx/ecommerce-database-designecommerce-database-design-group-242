@@ -17,7 +17,7 @@ This project is part of our Peer Group Assignment and focuses on:
 
 ## 🧑‍🤝‍🧑 Team Members
 
-- [Your Name](https://github.com/yourusername)
+- [Kindness Ebeneza](https://github.com/kindprinx)
 - [Teammate 2](https://github.com/teammate2)
 - [Teammate 3](https://github.com/teammate3)
 - [Teammate 4](https://github.com/teammate4)
