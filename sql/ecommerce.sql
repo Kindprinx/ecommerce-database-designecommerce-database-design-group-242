@@ -90,3 +90,129 @@ CREATE TABLE brand (
     logo_url VARCHAR(255) COMMENT 'URL to the brand logo',
     website VARCHAR(255) COMMENT 'URL to the brand website',
 );
+
+-- Size Category table
+-- Groups of size options (e.g. Clothing Sizes, Shoe Sizes)
+CREATE TABLE size_category (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the size category',
+    name VARCHAR(255) NOT NULL COMMENT 'Name of the size category (e.g. "Clothing Sizes")',
+    description TEXT COMMENT 'Description of the size category'
+);
+
+-- Size Option table
+-- Individual size options within a category
+CREATE TABLE size_option (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the size option',
+    size_category_id VARCHAR(36) NOT NULL COMMENT 'Reference to the size category this option belongs to',
+    label VARCHAR(50) NOT NULL COMMENT 'Display label for the size (e.g. "Small", "42")',
+    value VARCHAR(50) NOT NULL COMMENT 'Value for the size (may be same as label)',
+    sort_order INT DEFAULT 0 COMMENT 'Order for displaying sizes (smaller number = higher priority)',
+    FOREIGN KEY (size_category_id) REFERENCES size_category(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Attribute Type table
+-- Types of attributes (e.g. "Material", "Pattern", "Feature")
+CREATE TABLE attribute_type (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the attribute type',
+    name VARCHAR(100) NOT NULL COMMENT 'Name of the attribute type',
+    data_type VARCHAR(50) NOT NULL COMMENT 'Data type of the attribute (string, number, boolean, etc.)',
+    description TEXT COMMENT 'Description of the attribute type'
+);
+
+-- Attribute Category table
+-- Categories for grouping attributes
+CREATE TABLE attribute_category (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the attribute category',
+    name VARCHAR(100) NOT NULL COMMENT 'Name of the attribute category',
+    description TEXT COMMENT 'Description of the attribute category'
+);
+
+-- Product Attribute table
+-- Specific attributes assigned to products
+CREATE TABLE product_attribute (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the product attribute',
+    product_id VARCHAR(36) NOT NULL COMMENT 'Reference to the associated product',
+    attribute_category_id VARCHAR(36) NOT NULL COMMENT 'Reference to the attribute category',
+    attribute_type_id VARCHAR(36) NOT NULL COMMENT 'Reference to the attribute type',
+    name VARCHAR(100) NOT NULL COMMENT 'Attribute name',
+    value TEXT NOT NULL COMMENT 'Attribute value',
+    FOREIGN KEY (product_id) REFERENCES product(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (attribute_category_id) REFERENCES attribute_category(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (attribute_type_id) REFERENCES attribute_type(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
+-- ADDING FOREIGN KEYS TO COMPLETE RELATIONSHIPS
+
+-- Add foreign keys to product table after referenced tables are created
+ALTER TABLE product
+ADD CONSTRAINT fk_product_brand
+FOREIGN KEY (brand_id) REFERENCES brand(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE product
+ADD CONSTRAINT fk_product_category
+FOREIGN KEY (product_category_id) REFERENCES product_category(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+-- Add foreign keys to product_variation after referenced tables are created
+ALTER TABLE product_variation
+ADD CONSTRAINT fk_product_variation_color
+FOREIGN KEY (color_id) REFERENCES color(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE product_variation
+ADD CONSTRAINT fk_product_variation_size
+FOREIGN KEY (size_option_id) REFERENCES size_option(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+ALTER TABLE product_variation
+ADD CONSTRAINT fk_product_variation_image
+FOREIGN KEY (image_id) REFERENCES product_image(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+--INDEXES FOR PERFORMANCE
+
+--Core product index
+CREATE INDEX idx_product_brand ON product(brand_id);
+CREATE INDEX idx_product_category ON product(product_category_id);
+CREATE INDEX idx_product_variation_product ON product_variation(product_id);
+CREATE INDEX idx_product_item_variation ON product_item(product_variation_id);
+CREATE INDEX idx_product_item_product ON product_item(product_id);
+
+--index for classification(size..)
+CREATE INDEX idx_size_option_category ON size_option(size_category_id);
+CREATE INDEX idx_product_category_parent ON product_category(parent_category_id);
+
+--image and attributes indexes
+CREATE INDEX idx_product_image_product ON product_image(product_id);
+CREATE INDEX idx_product_attribute_product ON product_attribute(product_id);
+CREATE INDEX idx_product_attribute_category ON product_attribute(attribute_category_id);
+CREATE INDEX idx_product_attribute_type ON product_attribute(attribute_type_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
