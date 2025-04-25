@@ -70,3 +70,23 @@ CREATE TABLE product_image (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+CREATE TABLE color (  
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the color',  
+    name VARCHAR(50) NOT NULL COMMENT 'Color name',  
+    hex_code VARCHAR(7) COMMENT 'Hex code for the color (e.g., #FFFFFF)',  
+);  
+
+CREATE TABLE product_category (  
+    parent_category_id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the category',  
+    name VARCHAR(255) NOT NULL COMMENT 'Name of the product category',  
+    description TEXT COMMENT 'Description of the category',  
+); 
+
+CREATE TABLE brand (  
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the brand',  
+    name VARCHAR(255) NOT NULL COMMENT 'Brand name',  
+    description TEXT COMMENT 'Description of the brand',  
+    logo_url VARCHAR(255) COMMENT 'URL to the brand logo',
+    website VARCHAR(255) COMMENT 'URL to the brand website',
+);
