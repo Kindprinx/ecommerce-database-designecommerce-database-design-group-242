@@ -17,12 +17,21 @@ This project is part of our Peer Group Assignment and focuses on:
 
 ## 🧑‍🤝‍🧑 Team Members
 
+<<<<<<< HEAD
 - [Kindness Ebeneza](https://github.com/kindprinx)
 - [Teammate 2](https://github.com/RisperNJW)
 - [Teammate 3](https://github.com/teammate3)
 - [Teammate 4](https://github.com/teammate4)
 - [Teammate 5](https://github.com/teammate5)
 - [Teammate 6](https://github.com/teammate6)
+=======
+- [Kindness Ebeneza]
+- [risper	njeri]
+- [shadrack	musembi]
+- [imoleayo	ogunbekun]
+- [sarah	wanjiku]
+  
+>>>>>>> 4537e0c71abd87a7f0ba273795068343397a3452
 
 ---
 
