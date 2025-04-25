@@ -38,3 +38,35 @@ CREATE TABLE product_variation (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+
+-- Product Item table (Inventory)
+-- Actual inventory items corresponding to product variations
+CREATE TABLE product_item (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the inventory item',
+    product_id VARCHAR(36) NOT NULL COMMENT 'Reference to the parent product',
+    product_variation_id VARCHAR(36) NOT NULL COMMENT 'Reference to the associated product variation',
+    price DECIMAL(10, 2) NOT NULL COMMENT 'Specific price for this item (may differ from base price)',
+    stock_quantity INT NOT NULL DEFAULT 0 COMMENT 'Available quantity in stock',
+    sku VARCHAR(100) NOT NULL COMMENT 'Stock Keeping Unit for this specific item',
+    is_active BOOLEAN DEFAULT TRUE COMMENT 'Flag indicating if this item is active/available for purchase',
+    FOREIGN KEY (product_id) REFERENCES product(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (product_variation_id) REFERENCES product_variation(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Product Image table
+-- Images associated with products
+CREATE TABLE product_image (
+    id VARCHAR(36) PRIMARY KEY COMMENT 'Unique identifier for the product image',
+    product_id VARCHAR(36) NOT NULL COMMENT 'Reference to the associated product',
+    url VARCHAR(255) NOT NULL COMMENT 'URL to the image file',
+    alt_text VARCHAR(255) COMMENT 'Alternative text for accessibility',
+    is_primary BOOLEAN DEFAULT FALSE COMMENT 'Flag indicating if this is the primary/featured image',
+    FOREIGN KEY (product_id) REFERENCES product(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
